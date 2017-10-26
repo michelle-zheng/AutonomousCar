@@ -1,9 +1,12 @@
 #include <SoftwareSerial.h> 
+SoftwareSerial mySerial(10, 11); // RX, TX
 
-#define IN1 2	// L298N back    (blue)
-#define IN2 3	// L298N forward (green)
-#define IN3 4	// L298N left    (yellow)
-#define IN4 5	// L298N right   (orange)
+#define IN1 2	// L298N Back (blue)
+#define IN2 3	// L298N Forward  (green)
+#define IN3 4	// L298N Left (yellow)
+#define IN4 5	// L298N Right (orange)
+
+char i;
 
 void _stop();
 void forward();
@@ -56,38 +59,19 @@ void backLeft(){
 	digitalWrite(IN4, LOW);
 }
 
-void setup(){
-	Serial.begin(9600); // set up Serial library at 9600 bps
-	pinMode(IN1, OUTPUT);
-	pinMode(IN2, OUTPUT);
-	pinMode(IN3, OUTPUT);
-	pinMode(IN4, OUTPUT);
+void setup() 
+{
+    Serial.begin(9600);
+ 
+    // HC-06 default serial speed is 9600
+    mySerial.begin(9600);  
 }
 
 void loop(){
-	forward();
-	delay(2000);
-	back();
-	delay(2000);
-	_stop();
-	delay(2000);
 	
-	forwardRight();
-	delay(2000);
-	backRight();
-	delay(2000);
-	_stop();
-	delay(2000);
-	
-	forwardLeft();
-	delay(2000);
-	backLeft();
-	delay(2000);
-	_stop();
-	delay(2000);
-	/*
-	if(Serial.available()>0){
-		i=Serial.read();
+	if(mySerial.available()>0){
+		i=(char)mySerial.read();
+    
 		switch(i){
 			case'1':{
 				forward();
@@ -98,19 +82,19 @@ void loop(){
 				break;
 			}
 			case'3':{
-				turnRight();
+				forwardRight();
 				break;
 			}
 			case'4':{
-				turnLeft();
+				forwardLeft();
 				break;
 			}
 			case'5':{
-				turnBackRight();
+				backRight();
 				break;
 			}
 			case'6':{
-				turnBackLeft();
+				backLeft();
 				break;
 			}
 			case'7':{
@@ -118,6 +102,6 @@ void loop(){
 				break;
 			}
 		}
-	}*/
+	}
 }
 
